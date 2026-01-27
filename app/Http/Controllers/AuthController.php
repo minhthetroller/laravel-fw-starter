@@ -49,7 +49,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             return redirect()->intended(route('home'))
-                ->with('success', 'Welcome back, ' . Auth::user()->username . '!');
+                ->with('success', 'Welcome back, '.Auth::user()->username.'!');
         }
 
         return back()
@@ -81,7 +81,7 @@ class AuthController extends Controller
         User::create([
             'username' => $validated['username'],
             'name' => $validated['username'], // Use username as name
-            'email' => $validated['username'] . '@placeholder.com', // Placeholder email
+            'email' => $validated['username'].'@placeholder.com', // Placeholder email
             'password' => $validated['password'],
         ]);
 
@@ -113,7 +113,7 @@ class AuthController extends Controller
         $exists = User::where('username', $username)->exists();
 
         return response()->json([
-            'available' => !$exists,
+            'available' => ! $exists,
             'message' => $exists ? 'Username is already taken.' : 'Username is available.',
         ]);
     }
