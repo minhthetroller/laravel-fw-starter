@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,25 @@ Route::get('/sinhvien/{name?}/{studentId?}', [PageController::class, 'sinhvien']
 Route::get('/banco/{n}', [PageController::class, 'banco'])
     ->name('banco')
     ->where('n', '[0-9]+');                   // Only allow positive integers
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+// AJAX endpoint for username availability check
+Route::post('/check-username', [AuthController::class, 'checkUsername'])->name('check.username');
 
 /*
 |--------------------------------------------------------------------------
