@@ -453,8 +453,8 @@ class AuthTest extends TestCase
         $specialChars = ['@', '#', '$', '%', '^', '&', '*', '!', '?'];
 
         foreach ($specialChars as $char) {
-            $username = 'user' . array_search($char, $specialChars);
-            $password = 'Password1' . $char;
+            $username = 'user'.array_search($char, $specialChars);
+            $password = 'Password1'.$char;
 
             $response = $this->post('/register', [
                 'username' => $username,
