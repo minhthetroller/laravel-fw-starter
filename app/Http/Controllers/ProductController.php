@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -58,9 +56,6 @@ class ProductController extends Controller
 
     /**
      * Sanitize input to prevent XSS attacks.
-     *
-     * @param string $input
-     * @return string
      */
     private function sanitizeInput(string $input): string
     {

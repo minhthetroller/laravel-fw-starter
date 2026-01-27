@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RouteTest extends TestCase
 {
@@ -98,7 +98,7 @@ class RouteTest extends TestCase
     public function test_banco_route_with_different_sizes(): void
     {
         foreach ([4, 8, 10, 12] as $size) {
-            $response = $this->get('/banco/' . $size);
+            $response = $this->get('/banco/'.$size);
 
             $response->assertStatus(200);
             $response->assertViewHas('n', $size);

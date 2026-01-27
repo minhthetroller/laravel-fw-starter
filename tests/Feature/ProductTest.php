@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
@@ -74,7 +74,7 @@ class ProductTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->get('/product/' . $product->id);
+        $response = $this->get('/product/'.$product->id);
 
         $response->assertStatus(200);
         $response->assertViewIs('products.show');

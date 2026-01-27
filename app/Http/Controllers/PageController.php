@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class PageController extends Controller
 {
     /**
@@ -18,8 +16,6 @@ class PageController extends Controller
      * Display student information.
      * Input is sanitized to prevent XSS attacks.
      *
-     * @param string $name
-     * @param string $studentId
      * @return \Illuminate\View\View
      */
     public function sinhvien(string $name = 'Nguyen Tuan Minh', string $studentId = '4003867')
@@ -29,7 +25,7 @@ class PageController extends Controller
         $studentId = $this->sanitizeInput($studentId);
 
         // Validate student ID format (should be numeric)
-        if (!preg_match('/^[0-9]+$/', $studentId)) {
+        if (! preg_match('/^[0-9]+$/', $studentId)) {
             abort(400, 'Invalid student ID format');
         }
 
@@ -40,7 +36,6 @@ class PageController extends Controller
      * Display a chess board of size n x n.
      * Input is validated and sanitized.
      *
-     * @param int $n
      * @return \Illuminate\View\View
      */
     public function banco(int $n)
@@ -53,9 +48,6 @@ class PageController extends Controller
 
     /**
      * Sanitize input to prevent XSS attacks.
-     *
-     * @param string $input
-     * @return string
      */
     private function sanitizeInput(string $input): string
     {
