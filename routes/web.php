@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +35,7 @@ Route::get('/sinhvien/{name?}/{studentId?}', [PageController::class, 'sinhvien']
     ->name('sinhvien')
     ->where([
         'name' => '[a-zA-Z\s\-]+',           // Only allow letters, spaces, and hyphens
-        'studentId' => '[0-9]+'              // Only allow numeric student IDs
+        'studentId' => '[0-9]+',              // Only allow numeric student IDs
     ]);
 
 /*
