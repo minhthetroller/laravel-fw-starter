@@ -12,9 +12,36 @@ on:
       - master
 
 jobs:
+  # Check if code changes require testing
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            code:
+              - '**/*.php'
+              - 'composer.json'
+              - 'composer.lock'
+              - 'phpunit.xml'
+              - 'database/**'
+              - 'routes/**'
+              - 'config/**'
+              - 'resources/views/**'
+              - 'public/**'
+              - '.github/workflows/**'
+
   tests:
     name: Run Tests
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
 
     services:
       mysql:
@@ -79,6 +106,8 @@ jobs:
   code-style:
     name: Code Style Check
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
 
     steps:
       - name: Checkout code
