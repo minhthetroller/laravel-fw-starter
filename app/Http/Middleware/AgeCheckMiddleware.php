@@ -19,7 +19,7 @@ class AgeCheckMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // Check if age verification exists in session
-        if (!session()->has('verified_age')) {
+        if (! session()->has('verified_age')) {
             // No age verification, redirect to age check form
             return redirect()->route('age-check')
                 ->with('warning', 'Please verify your age to access this content.');
@@ -30,6 +30,7 @@ class AgeCheckMiddleware
         // If age is less than 18, show access denied
         if ($verifiedAge < 18) {
             $yearsRemaining = 18 - $verifiedAge;
+
             return redirect()->route('age-denied', ['years' => $yearsRemaining]);
         }
 

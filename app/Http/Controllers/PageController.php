@@ -43,6 +43,7 @@ class PageController extends Controller
 
         // Under 18 - redirect to denied page with years remaining
         $yearsRemaining = 18 - $age;
+
         return redirect()->route('age-denied', ['years' => $yearsRemaining]);
     }
 
@@ -52,6 +53,7 @@ class PageController extends Controller
     public function ageDenied(?int $years = null)
     {
         $yearsRemaining = $years ?? 0;
+
         return view('errors.age-denied', compact('yearsRemaining'));
     }
 

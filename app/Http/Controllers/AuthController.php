@@ -51,7 +51,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             return redirect()->intended(route('home'))
-                ->with('success', 'Welcome back, ' . Auth::user()->username . '!');
+                ->with('success', 'Welcome back, '.Auth::user()->username.'!');
         }
 
         // Authentication failed
@@ -143,7 +143,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()->route('home')
-            ->with('success', 'Account created successfully! Welcome, ' . $user->username . '!');
+            ->with('success', 'Account created successfully! Welcome, '.$user->username.'!');
     }
 
     /**
@@ -171,10 +171,10 @@ class AuthController extends Controller
     {
         // Remove any HTML tags
         $input = strip_tags($input);
-        
+
         // Convert special characters to HTML entities
         $input = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
-        
+
         // Trim whitespace
         $input = trim($input);
 

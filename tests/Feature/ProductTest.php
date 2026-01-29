@@ -15,7 +15,7 @@ class ProductTest extends TestCase
      */
     public function test_product_index_page_loads(): void
     {
-        $response = $this->get('/product');
+        $response = $this->withSession(['verified_age' => 18])->get('/product');
 
         $response->assertStatus(200);
         $response->assertViewIs('products.index');
@@ -26,7 +26,7 @@ class ProductTest extends TestCase
      */
     public function test_product_create_page_loads(): void
     {
-        $response = $this->get('/product/create');
+        $response = $this->withSession(['verified_age' => 18])->get('/product/create');
 
         $response->assertStatus(200);
         $response->assertViewIs('products.create');
@@ -44,7 +44,7 @@ class ProductTest extends TestCase
             'image' => 'https://example.com/image.jpg',
         ];
 
-        $response = $this->post('/product', $productData);
+        $response = $this->withSession(['verified_age' => 18])->post('/product', $productData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('products', [
@@ -58,7 +58,7 @@ class ProductTest extends TestCase
      */
     public function test_product_creation_fails_with_invalid_data(): void
     {
-        $response = $this->post('/product', [
+        $response = $this->withSession(['verified_age' => 18])->post('/product', [
             'name' => '',
             'description' => '',
             'price' => 'not-a-number',
@@ -74,7 +74,7 @@ class ProductTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->get('/product/'.$product->id);
+        $response = $this->withSession(['verified_age' => 18])->get('/product/'.$product->id);
 
         $response->assertStatus(200);
         $response->assertViewIs('products.show');
@@ -86,7 +86,7 @@ class ProductTest extends TestCase
      */
     public function test_product_show_returns_404_for_invalid_uuid(): void
     {
-        $response = $this->get('/product/invalid-uuid');
+        $response = $this->withSession(['verified_age' => 18])->get('/product/invalid-uuid');
 
         $response->assertStatus(404);
     }
@@ -96,7 +96,7 @@ class ProductTest extends TestCase
      */
     public function test_product_show_returns_404_for_nonexistent_product(): void
     {
-        $response = $this->get('/product/00000000-0000-0000-0000-000000000000');
+        $response = $this->withSession(['verified_age' => 18])->get('/product/00000000-0000-0000-0000-000000000000');
 
         $response->assertStatus(404);
     }
@@ -112,7 +112,7 @@ class ProductTest extends TestCase
             'price' => 50.00,
         ];
 
-        $response = $this->post('/product', $productData);
+        $response = $this->withSession(['verified_age' => 18])->post('/product', $productData);
 
         $response->assertRedirect();
         $this->assertDatabaseMissing('products', [
@@ -131,7 +131,7 @@ class ProductTest extends TestCase
             'price' => -10.00,
         ];
 
-        $response = $this->post('/product', $productData);
+        $response = $this->withSession(['verified_age' => 18])->post('/product', $productData);
 
         $response->assertSessionHasErrors('price');
     }
@@ -143,7 +143,7 @@ class ProductTest extends TestCase
     {
         $products = Product::factory()->count(3)->create();
 
-        $response = $this->get('/product');
+        $response = $this->withSession(['verified_age' => 18])->get('/product');
 
         $response->assertStatus(200);
         foreach ($products as $product) {
