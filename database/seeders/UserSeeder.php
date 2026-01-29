@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Only create test user if it doesn't already exist
-        if (!User::where('username', 'nguyentuanminh')->exists()) {
+        if (! User::where('username', 'nguyentuanminh')->exists()) {
             // Create the test user with specified credentials
             // Password is hashed using bcrypt via Hash::make()
             User::create([
