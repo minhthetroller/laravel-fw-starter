@@ -12,6 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Seed test user for authentication
+        $this->call(UserSeeder::class);
+
         // Seed random products
         Product::factory(15)->create();
 

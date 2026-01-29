@@ -20,10 +20,13 @@
         }
 
         label {
-            @apply block uppercase text-slate-700 mb-2
+            @apply block capitalize text-slate-700 mb-2
         }
 
-        input,
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"],
         textarea {
             @apply rounded-md shadow-sm appearance-none border w-full py-2 px-3 text-slate-700 leading-tight
             focus:outline-none
@@ -40,9 +43,12 @@
 <body class="container mx-auto mt-10 mb-10 max-w-lg">
     <h1 class="mb-4 text-2xl">@yield('title')</h1>
 
-    <div x-data="{ flash: true }">
+    <div x-data="{ flash: true }" x-init="setTimeout(() => flash = false, 4000)">
         @if(session()->has('success'))
         <div x-show="flash"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
              class="relative mb-4 border rounded border-green-400 bg-green-100 px-4 py-2 text-lg
              text-green-700">
             <strong class="font-bold">Success!</strong>
