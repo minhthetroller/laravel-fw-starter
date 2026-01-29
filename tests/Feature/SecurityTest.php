@@ -61,7 +61,7 @@ class SecurityTest extends TestCase
     public function test_product_uuid_format_validated(): void
     {
         // Invalid UUID format
-        $response = $this->get('/product/123');
+        $response = $this->withSession(['verified_age' => 18])->get('/product/123');
 
         $response->assertStatus(404);
     }
