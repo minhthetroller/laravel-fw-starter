@@ -32,7 +32,7 @@ class SecurityTest extends TestCase
         ];
 
         // Regex validation should reject this
-        $response = $this->post('/product', $maliciousData);
+        $response = $this->withSession(['verified_age' => 18])->post('/product', $maliciousData);
 
         $response->assertSessionHasErrors('name');
     }
@@ -48,7 +48,7 @@ class SecurityTest extends TestCase
             'price' => 25.00,
         ];
 
-        $response = $this->post('/product', $productData);
+        $response = $this->withSession(['verified_age' => 18])->post('/product', $productData);
 
         $this->assertDatabaseHas('products', [
             'name' => 'Clean Product Name',
@@ -110,7 +110,7 @@ class SecurityTest extends TestCase
     public function test_csrf_protection_enabled(): void
     {
         // POST without CSRF token should fail
-        $response = $this->post('/product', [
+        $response = $this->withSession(['verified_age' => 18])->post('/product', [
             'name' => 'Test',
             'description' => 'Test',
             'price' => 10,
@@ -131,7 +131,7 @@ class SecurityTest extends TestCase
             'price' => 9999999.99,
         ];
 
-        $response = $this->post('/product', $productData);
+        $response = $this->withSession(['verified_age' => 18])->post('/product', $productData);
 
         $response->assertSessionHasErrors('price');
     }
@@ -147,7 +147,7 @@ class SecurityTest extends TestCase
             'price' => 10.00,
         ];
 
-        $response = $this->post('/product', $productData);
+        $response = $this->withSession(['verified_age' => 18])->post('/product', $productData);
 
         $response->assertSessionHasErrors('description');
     }
