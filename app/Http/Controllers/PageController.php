@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 class PageController extends Controller
 {
     /**
@@ -10,6 +12,47 @@ class PageController extends Controller
     public function home()
     {
         return view('home');
+    }
+
+    /**
+     * Display the age verification form.
+     */
+    public function showAgeCheck()
+    {
+        return view('age-check');
+    }
+
+    /**
+     * Verify user's age and store in session.
+     */
+    public function verifyAge(Request $request)
+    {
+        $validated = $request->validate([
+            'age' => 'required|integer|min:1|max:120',
+        ]);
+
+        $age = (int) $validated['age'];
+
+        // Store age in session
+        session(['verified_age' => $age]);
+
+        if ($age >= 18) {
+            return redirect()->route('products.index')
+                ->with('success', 'Age verified successfully. Welcome!');
+        }
+
+        // Under 18 - redirect to denied page with years remaining
+        $yearsRemaining = 18 - $age;
+        return redirect()->route('age-denied', ['years' => $yearsRemaining]);
+    }
+
+    /**
+     * Display access denied page for underage users.
+     */
+    public function ageDenied(?int $years = null)
+    {
+        $yearsRemaining = $years ?? 0;
+        return view('errors.age-denied', compact('yearsRemaining'));
     }
 
     /**
