@@ -18,7 +18,7 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 |--------------------------------------------------------------------------
 */
 // Guest-only routes (redirect to home if already logged in)
-Route::middleware('guest')->group(function () {
+Route::middleware(['guest', 'age.check'])->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'signIn']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
