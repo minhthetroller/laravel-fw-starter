@@ -18,7 +18,7 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 |--------------------------------------------------------------------------
 */
 // Guest-only routes (redirect to home if already logged in)
-Route::middleware('guest')->group(function () {
+Route::middleware(['guest', 'age.check'])->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'signIn']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -32,10 +32,19 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 /*
 |--------------------------------------------------------------------------
-| Product Routes
+| Age Verification Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('product')->name('products.')->group(function () {
+Route::get('/age-check', [PageController::class, 'showAgeCheck'])->name('age-check');
+Route::post('/age-check', [PageController::class, 'verifyAge'])->name('age-check.verify');
+Route::get('/age-denied/{years?}', [PageController::class, 'ageDenied'])->name('age-denied');
+
+/*
+|--------------------------------------------------------------------------
+| Product Routes (Age Restricted)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('age.check')->prefix('product')->name('products.')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index');
     Route::get('/create', [ProductController::class, 'create'])->name('create');
     Route::post('/', [ProductController::class, 'store'])->name('store');
