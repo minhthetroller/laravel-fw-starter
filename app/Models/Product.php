@@ -38,9 +38,17 @@ class Product extends Model
      */
     protected $fillable = [
         'name',
+        'brand',
+        'sku',
         'description',
         'price',
         'image',
+        'color',
+        'ram',
+        'rom',
+        'screen_size',
+        'battery',
+        'stock',
     ];
 
     /**
@@ -50,5 +58,6 @@ class Product extends Model
      */
     protected $casts = [
         'price' => 'decimal:2',
+        'stock' => 'integer',
     ];
 }

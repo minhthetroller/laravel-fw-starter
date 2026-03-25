@@ -23,6 +23,7 @@ class User extends Authenticatable
         'stuId',
         'class',
         'gender',
+        'is_admin',
     ];
 
     /**

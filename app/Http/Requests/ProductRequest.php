@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -47,6 +48,47 @@ class ProductRequest extends FormRequest
                 'url',
                 'max:500',
             ],
+            'brand' => [
+                'required',
+                'string',
+                'max:100',
+            ],
+            'sku' => [
+                'nullable',
+                'string',
+                'max:100',
+                Rule::unique('products', 'sku')->ignore($this->route('product')),
+            ],
+            'color' => [
+                'nullable',
+                'string',
+                'max:50',
+            ],
+            'ram' => [
+                'nullable',
+                'string',
+                'max:20',
+            ],
+            'rom' => [
+                'nullable',
+                'string',
+                'max:20',
+            ],
+            'screen_size' => [
+                'nullable',
+                'string',
+                'max:20',
+            ],
+            'battery' => [
+                'nullable',
+                'string',
+                'max:30',
+            ],
+            'stock' => [
+                'nullable',
+                'integer',
+                'min:0',
+            ],
         ];
     }
 
@@ -68,6 +110,9 @@ class ProductRequest extends FormRequest
             'price.min' => 'Product price cannot be negative.',
             'price.max' => 'Product price cannot exceed 999,999.99.',
             'image.url' => 'Product image must be a valid URL.',
+            'brand.required' => 'Brand is required.',
+            'stock.integer' => 'Stock must be a whole number.',
+            'stock.min' => 'Stock cannot be negative.',
         ];
     }
 
@@ -93,6 +138,12 @@ class ProductRequest extends FormRequest
             $this->merge([
                 'price' => filter_var($this->price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
             ]);
+        }
+
+        foreach (['brand', 'sku', 'color', 'ram', 'rom', 'screen_size', 'battery'] as $field) {
+            if ($this->has($field) && $this->$field !== null) {
+                $this->merge([$field => strip_tags(trim($this->$field))]);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
@@ -17,8 +18,8 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 | Authentication Routes
 |--------------------------------------------------------------------------
 */
-// Guest-only routes (redirect to home if already logged in)
-Route::middleware(['guest', 'age.check'])->group(function () {
+// Guest-only routes
+Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'signIn']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -41,17 +42,27 @@ Route::get('/age-denied/{years?}', [PageController::class, 'ageDenied'])->name('
 
 /*
 |--------------------------------------------------------------------------
-| Product Routes (Age Restricted)
+| Public Product Routes (read-only, no age gate)
 |--------------------------------------------------------------------------
 */
-Route::middleware('age.check')->prefix('product')->name('products.')->group(function () {
+Route::prefix('products')->name('products.')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index');
-    Route::get('/create', [ProductController::class, 'create'])->name('create');
-    Route::post('/', [ProductController::class, 'store'])->name('store');
-    // UUID pattern validation for product ID
     Route::get('/{product}', [ProductController::class, 'show'])
         ->name('show')
         ->where('product', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.products.index');
+    })->name('dashboard');
+
+    Route::resource('products', AdminProductController::class);
 });
 
 /*

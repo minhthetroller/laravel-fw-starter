@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -11,7 +12,9 @@ class PageController extends Controller
      */
     public function home()
     {
-        return view('home');
+        $featured = Product::latest()->take(6)->get();
+
+        return view('home', compact('featured'));
     }
 
     /**

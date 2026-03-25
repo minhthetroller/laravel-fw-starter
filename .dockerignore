@@ -2,8 +2,8 @@
 .gitignore
 .env
 .env.*
-!.env.docker
 .docker
+!.docker/entrypoint.sh
 docker-compose.yml
 Dockerfile
 *.md
