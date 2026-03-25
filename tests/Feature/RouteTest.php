@@ -29,8 +29,7 @@ class RouteTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Products');
-        $response->assertSee('Student Info');
-        $response->assertSee('Chess Board');
+        $response->assertSee('Shop Now');
     }
 
     /**

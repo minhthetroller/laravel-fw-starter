@@ -2,67 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the products.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::latest()->paginate(12);
+        $query = Product::query();
 
-        return view('products.index', compact('products'));
+        if ($search = $request->query('search')) {
+            $search = strip_tags(trim($search));
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('brand', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($brand = $request->query('brand')) {
+            $query->where('brand', strip_tags(trim($brand)));
+        }
+
+        if ($ram = $request->query('ram')) {
+            $query->where('ram', strip_tags(trim($ram)));
+        }
+
+        if ($rom = $request->query('rom')) {
+            $query->where('rom', strip_tags(trim($rom)));
+        }
+
+        if ($color = $request->query('color')) {
+            $query->where('color', strip_tags(trim($color)));
+        }
+
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $products */
+        $products = $query->latest()->paginate(12);
+        $products->withQueryString();
+
+        // Distinct filter options for dropdowns
+        $brands = Product::select('brand')->distinct()->orderBy('brand')->pluck('brand');
+        $rams   = Product::select('ram')->whereNotNull('ram')->distinct()->orderBy('ram')->pluck('ram');
+        $roms   = Product::select('rom')->whereNotNull('rom')->distinct()->orderBy('rom')->pluck('rom');
+        $colors = Product::select('color')->whereNotNull('color')->distinct()->orderBy('color')->pluck('color');
+
+        return view('products.index', compact('products', 'brands', 'rams', 'roms', 'colors'));
     }
 
-    /**
-     * Show the form for creating a new product.
-     */
-    public function create()
-    {
-        return view('products.create');
-    }
-
-    /**
-     * Store a newly created product in storage.
-     * Uses ProductRequest for validation and SQL injection prevention.
-     */
-    public function store(ProductRequest $request)
-    {
-        // Validated data is already sanitized by ProductRequest
-        $validated = $request->validated();
-
-        // Additional XSS sanitization for text fields
-        $validated['name'] = $this->sanitizeInput($validated['name']);
-        $validated['description'] = $this->sanitizeInput($validated['description']);
-
-        $product = Product::create($validated);
-
-        return redirect()
-            ->route('products.show', $product)
-            ->with('success', 'Product created successfully!');
-    }
-
-    /**
-     * Display the specified product.
-     * Route model binding with UUID ensures valid UUID format.
-     */
     public function show(Product $product)
     {
         return view('products.show', compact('product'));
-    }
-
-    /**
-     * Sanitize input to prevent XSS attacks.
-     */
-    private function sanitizeInput(string $input): string
-    {
-        // Remove any HTML tags and encode special characters
-        $sanitized = strip_tags($input);
-        $sanitized = htmlspecialchars($sanitized, ENT_QUOTES, 'UTF-8');
-
-        return $sanitized;
     }
 }

@@ -3,64 +3,71 @@
 @section('title', 'Create Account')
 
 @section('content')
-<div class="space-y-6">
+<div class="max-w-md mx-auto px-4 py-10">
     {{-- Header --}}
-    <div class="text-center">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+    <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-2xl mb-4">
             <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
             </svg>
         </div>
-        <h2 class="text-2xl font-bold text-slate-800">Create Account</h2>
-        <p class="text-slate-600 mt-2">Join us by filling in your information</p>
+        <h2 class="text-2xl font-bold text-gray-900">Create Account</h2>
+        <p class="text-gray-500 mt-1">Join us by filling in your information</p>
     </div>
 
     {{-- Registration Form --}}
-    <form method="POST" action="{{ route('register') }}" class="bg-white rounded-lg shadow-md p-6 space-y-4">
+    <form method="POST" action="{{ route('register') }}" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
         @csrf
 
         {{-- Username Field --}}
         <div>
-            <label for="username">Username <span class="text-red-500">*</span></label>
-            <input 
-                type="text" 
-                id="username" 
-                name="username" 
+            <label for="username" class="block text-sm font-medium text-gray-700 mb-1">
+                Username <span class="text-red-500">*</span>
+            </label>
+            <input
+                type="text"
+                id="username"
+                name="username"
                 value="{{ old('username') }}"
-                class="@error('username') border-red-500 @enderror"
+                class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 {{ $errors->has('username') ? 'border-red-400 bg-red-50' : 'border-gray-300' }}"
                 placeholder="Choose a username (letters, numbers, underscores)"
                 required
                 autocomplete="username"
             >
             @error('username')
-                <p class="error mt-1">{{ $message }}</p>
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
         </div>
 
         {{-- Password Field --}}
         <div>
-            <label for="password">Password <span class="text-red-500">*</span></label>
-            <input 
-                type="password" 
-                id="password" 
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
+                Password <span class="text-red-500">*</span>
+            </label>
+            <input
+                type="password"
+                id="password"
                 name="password"
-                class="@error('password') border-red-500 @enderror"
+                class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 {{ $errors->has('password') ? 'border-red-400 bg-red-50' : 'border-gray-300' }}"
                 placeholder="Minimum 6 characters"
                 required
                 autocomplete="new-password"
             >
             @error('password')
-                <p class="error mt-1">{{ $message }}</p>
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
         </div>
 
         {{-- Confirm Password Field --}}
         <div>
-            <label for="password_confirmation">Confirm Password <span class="text-red-500">*</span></label>
-            <input 
-                type="password" 
-                id="password_confirmation" 
+            <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">
+                Confirm Password <span class="text-red-500">*</span>
+            </label>
+            <input
+                type="password"
+                id="password_confirmation"
                 name="password_confirmation"
+                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="Re-enter your password"
                 required
                 autocomplete="new-password"
@@ -69,102 +76,99 @@
 
         {{-- Student ID Field --}}
         <div>
-            <label for="stuId">Student ID <span class="text-red-500">*</span></label>
-            <input 
-                type="text" 
-                id="stuId" 
-                name="stuId" 
+            <label for="stuId" class="block text-sm font-medium text-gray-700 mb-1">
+                Student ID <span class="text-red-500">*</span>
+            </label>
+            <input
+                type="text"
+                id="stuId"
+                name="stuId"
                 value="{{ old('stuId') }}"
-                class="@error('stuId') border-red-500 @enderror"
+                class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 {{ $errors->has('stuId') ? 'border-red-400 bg-red-50' : 'border-gray-300' }}"
                 placeholder="Enter your student ID (numbers only)"
                 required
             >
             @error('stuId')
-                <p class="error mt-1">{{ $message }}</p>
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
         </div>
 
         {{-- Class Field --}}
         <div>
-            <label for="class">Class <span class="text-red-500">*</span></label>
-            <input 
-                type="text" 
-                id="class" 
-                name="class" 
+            <label for="class" class="block text-sm font-medium text-gray-700 mb-1">
+                Class <span class="text-red-500">*</span>
+            </label>
+            <input
+                type="text"
+                id="class"
+                name="class"
                 value="{{ old('class') }}"
-                class="@error('class') border-red-500 @enderror"
+                class="w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 {{ $errors->has('class') ? 'border-red-400 bg-red-50' : 'border-gray-300' }}"
                 placeholder="Enter your class (e.g., 67PM2)"
                 required
             >
             @error('class')
-                <p class="error mt-1">{{ $message }}</p>
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
         </div>
 
         {{-- Gender Field --}}
         <div>
-            <label>Gender <span class="text-red-500">*</span></label>
-            <div class="flex gap-6 mt-2">
-                <label class="flex items-center cursor-pointer normal-case !mb-0">
-                    <input 
-                        type="radio" 
-                        name="gender" 
-                        value="male" 
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+                Gender <span class="text-red-500">*</span>
+            </label>
+            <div class="flex gap-6">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="radio"
+                        name="gender"
+                        value="male"
                         @checked(old('gender') === 'male')
-                        class="!w-4 !h-4 !p-0 !shadow-none"
+                        class="h-4 w-4 text-blue-600"
                         required
                     >
-                    <span class="ml-2 text-slate-700">Male</span>
+                    <span class="text-sm text-gray-700">Male</span>
                 </label>
-                <label class="flex items-center cursor-pointer normal-case !mb-0">
-                    <input 
-                        type="radio" 
-                        name="gender" 
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="radio"
+                        name="gender"
                         value="female"
                         @checked(old('gender') === 'female')
-                        class="!w-4 !h-4 !p-0 !shadow-none"
+                        class="h-4 w-4 text-blue-600"
                     >
-                    <span class="ml-2 text-slate-700">Female</span>
+                    <span class="text-sm text-gray-700">Female</span>
                 </label>
-                <label class="flex items-center cursor-pointer normal-case !mb-0">
-                    <input 
-                        type="radio" 
-                        name="gender" 
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="radio"
+                        name="gender"
                         value="other"
                         @checked(old('gender') === 'other')
-                        class="!w-4 !h-4 !p-0 !shadow-none"
+                        class="h-4 w-4 text-blue-600"
                     >
-                    <span class="ml-2 text-slate-700">Other</span>
+                    <span class="text-sm text-gray-700">Other</span>
                 </label>
             </div>
             @error('gender')
-                <p class="error mt-1">{{ $message }}</p>
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
         </div>
 
         {{-- Submit Button --}}
         <div class="pt-2">
-            <button type="submit" class="btn w-full bg-white text-white hover:bg-slate-100 py-2">
+            <button type="submit"
+                    class="w-full py-2.5 px-4 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors">
                 Create Account
             </button>
         </div>
     </form>
 
-    {{-- Login Link --}}
-    <div class="text-center">
-        <p class="text-slate-600">
-            Already have an account? 
-            <a href="{{ route('login') }}" class="link text-blue-600 hover:text-blue-700">
-                Sign in here
-            </a>
-        </p>
-    </div>
-
-    {{-- Back to Home --}}
-    <div class="text-center">
-        <a href="{{ route('home') }}" class="text-slate-500 hover:text-slate-700 text-sm">
-            ← Back to Home
+    <p class="mt-6 text-center text-sm text-gray-600">
+        Already have an account?
+        <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-700">
+            Sign in here
         </a>
-    </div>
+    </p>
 </div>
 @endsection
