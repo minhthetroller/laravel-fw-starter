@@ -31,7 +31,7 @@ class ProductFactory extends Factory
         $brand = fake()->randomElement($brands);
 
         return [
-            'name' => $brand . ' ' . fake()->bothify('?? ###'),
+            'name' => $brand.' '.fake()->bothify('?? ###'),
             'brand' => $brand,
             'sku' => strtoupper(fake()->unique()->bothify('??-####')),
             'description' => fake()->paragraph(3),
@@ -40,8 +40,8 @@ class ProductFactory extends Factory
             'color' => fake()->randomElement($colors),
             'ram' => fake()->randomElement($rams),
             'rom' => fake()->randomElement($roms),
-            'screen_size' => fake()->randomFloat(1, 5.5, 7.0) . '"',
-            'battery' => fake()->numberBetween(3000, 6000) . 'mAh',
+            'screen_size' => fake()->randomFloat(1, 5.5, 7.0).'"',
+            'battery' => fake()->numberBetween(3000, 6000).'mAh',
             'stock' => fake()->numberBetween(0, 100),
         ];
     }

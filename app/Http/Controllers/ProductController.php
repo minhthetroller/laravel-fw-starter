@@ -15,8 +15,8 @@ class ProductController extends Controller
             $search = strip_tags(trim($search));
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('brand', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('brand', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
@@ -42,8 +42,8 @@ class ProductController extends Controller
 
         // Distinct filter options for dropdowns
         $brands = Product::select('brand')->distinct()->orderBy('brand')->pluck('brand');
-        $rams   = Product::select('ram')->whereNotNull('ram')->distinct()->orderBy('ram')->pluck('ram');
-        $roms   = Product::select('rom')->whereNotNull('rom')->distinct()->orderBy('rom')->pluck('rom');
+        $rams = Product::select('ram')->whereNotNull('ram')->distinct()->orderBy('ram')->pluck('ram');
+        $roms = Product::select('rom')->whereNotNull('rom')->distinct()->orderBy('rom')->pluck('rom');
         $colors = Product::select('color')->whereNotNull('color')->distinct()->orderBy('color')->pluck('color');
 
         return view('products.index', compact('products', 'brands', 'rams', 'roms', 'colors'));
